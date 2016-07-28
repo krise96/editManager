@@ -52,6 +52,16 @@
             },
             controller: listController, 
             controllerAs: 'list',
+            $routeConfig: [
+                {
+			        path: '/list',
+			        component: 'editList',
+			        name: 'editList'
+		        }, 
+                {
+			        path: '/**',
+			        redirectTo: ["editList", ""]
+		        }],
         };   
     });
 })();
