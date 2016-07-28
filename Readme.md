@@ -6,3 +6,4 @@ Repo with editManager
 2. cd /public
 3. bower install
 4. node ../server.js
+http://localhost:1337/
