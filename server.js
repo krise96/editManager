@@ -3,7 +3,6 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var mongoose = require('./mongoose.js');
 var methodOverride = require('method-override');
-
 var app = express();
 var router = express.Router();
 var server = app.listen(1337);
@@ -26,19 +25,58 @@ app.get('/peoples', function(req, res) {
     });
 });
 
-// app.delete('/peoples', function (req, res){
-//     console.log("Delete method");
-//     console.log(req.body);
-//     try{
-//     mongoose.PeopleModel.findOne({author: req.body.author, text: req.body.text}).remove().exec();
-//     }catch(e){
-//         return res.send({ status: 'Bad request'});
-//     }
-//     return res.send({ status: 'OK'});
-// });
+app.delete('/peoples', function(req, res){
+    mongoose.PeopleModel.findById(req.body.id, function(err, people) {
+        if (!people)
+            return next(new Error('Could not load Document'));
+        else {
+            people.remove(function(err) {
+                if (err){
+                    console.log('error');
+                }else
+                    console.log('success');
+                return mongoose.PeopleModel.find(function (err, peoples) {
+                    if (!err) {
+                        return res.send(peoples);
+                    } else {
+                        res.statusCode = 500;
+                        log.error('Internal error(%d): %s',res.statusCode,err.message);
+                        return res.send({ error: 'Server error' });
+                    }
+                });
+            });
+        }
+    });
+});
 
+app.put('/peoples', function(req, res){
+    mongoose.PeopleModel.findById(req.body.id, function(err, people) {
+        if (!people)
+            return next(new Error('Could not load Document'));
+        else {
+            people.firstName = req.body.firstName;
+            people.lastName = req.body.lastName;
+            people.email = req.body.email;
+            people.save(function(err) {
+                if (err){
+                    console.log('error');
+                }else
+                    console.log('success');
+                return mongoose.PeopleModel.find(function (err, peoples) {
+                    if (!err) {
+                        return res.send(peoples);
+                    } else {
+                        res.statusCode = 500;
+                        log.error('Internal error(%d): %s',res.statusCode,err.message);
+                        return res.send({ error: 'Server error' });
+                    }
+                });
+            });
+        }
+    });
+});
 app.post('/peoples', function(req, res) {
-    console.log('---------------------------------------------', req.body.lastName);
+    console.log('---------------------------------------------');
     
     var people = new mongoose.PeopleModel({
         lastName: req.body.lastName,
@@ -52,14 +90,14 @@ app.post('/peoples', function(req, res) {
         if (!err) {
             console.log("People added");
             return mongoose.PeopleModel.find(function (err, peoples) {
-        if (!err) {
-            return res.send(peoples);
-        } else {
-            res.statusCode = 500;
-            log.error('Internal error(%d): %s',res.statusCode,err.message);
-            return res.send({ error: 'Server error' });
-        }
-    });
+                if (!err) {
+                    return res.send(peoples);
+                } else {
+                    res.statusCode = 500;
+                    log.error('Internal error(%d): %s',res.statusCode,err.message);
+                    return res.send({ error: 'Server error' });
+                    }
+            });
         } else {
             console.log(err);
             if(err.name == 'ValidationError') {

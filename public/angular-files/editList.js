@@ -3,47 +3,28 @@
     
    function listController($scope, $http){
        var vm =this;
-       vm.peoples="";
-       load($http);
-        
-        vm.firstName ="";
-        vm.lastName ="";
-        vm.email="";
-        console.log('Hello');
-
-
-
-
-
-
-
-
-
-
-
-
-
+       $scope.peoples="";
 
 
         vm.addPeople = function (f, l, e) {    
             $http.post("http://localhost:1337/peoples", 
             {'firstName': f, 'lastName': l, 'email': e})
             .then(function (data){
-                        console.log('OK', data);
+                        console.log('OK');
                         vm.peoples = data.data;
                     }, function (err) {
                         console.log(err);
                     });
         };
-
-        function load($http){
+        $scope.load = function($http){
             $http.get('http://localhost:1337/peoples').then(function (data){
-                        console.log('OK', data);
-                        vm.peoples = data.data;
+                        console.log('OK');
+                        $scope.peoples = data.data;
                     }, function (err) {
                         console.log(err);
                     });
         };   
+         $scope.load($http);
     };
     
     
