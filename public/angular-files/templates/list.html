@@ -8,10 +8,7 @@
         <th></th>
         <th></th>
     </tr>
-    <!-- Катюха памагі, тут крч виводиться той список студентів, і менті треба коли я натискаю на кнопку шоб лише 
-    одному вивелось тіпа редагування, а потім ше то якось зберегти 
-    list.peoples прописано в edit List
-    -->
+
      <tr ng-repeat="item in peoples track by $index" ng-controller="RowController as row">
         
             <th>
@@ -46,12 +43,19 @@
 
     <table  class="table">
         <tr>
-            <th><input type="text" class="form-control" id="usr" ng-model="firstName" placeholder="Your name"></th>
-            <th><input type="text" class="form-control" id="usr" ng-model="lastName" placeholder="Your last name"></th>
             <th>
-                <input type="email" class="form-control" name="emailIn" id="usr" ng-model="email" placeholder="Your email">   
+                <input type="text" class="form-control" id="usr" data-ng-model="list.firstName" placeholder="Your name">
             </th>
-            <th><button type="button" class="btn btn-danger" ng-click="list.addPeople(firstName, lastName, email)">ADD new people</button></th>
+            <th>
+                <input type="text" class="form-control" id="usr" data-ng-model="list.lastName" placeholder="Your last name">
+            </th>
+            <th>
+                <input type="email" class="form-control" name="emailIn" id="usr" data-ng-model="list.email" placeholder="Your email">
+                <span class="error" ng-show="emailIn.$error.email">
+                    Not valid email!
+                </span>   
+            </th>
+            <th><button type="button" class="btn btn-danger" ng-click="list.addPeople(list.firstName, list.lastName, list.email)">ADD new people</button></th>
         </tr>
     </table>
 </div>

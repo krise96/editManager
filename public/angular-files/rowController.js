@@ -10,7 +10,7 @@
 		vm.lastName = "";
 		vm.email = "";
 		
-		vm.edit= function (name, lastName, email) {
+		vm.edit= function (name, lastName, email) {			
 			if(arguments == 0){
 				m.showEdit = !vm.showEdit;
 				return;
@@ -23,7 +23,16 @@
 		}
 		
 		
-		vm.save=function (id) {
+		vm.save=function (id) {	
+			if(vm.name.length < 3 || vm.lastName.length < 3 || vm.email.indexOf('@') == -1 || vm.email.indexOf('.') == -1){
+                alert('False data.');
+			
+                return;
+            }
+			
+			
+			
+			
 			console.log({'id':id, 'firstName': vm.name, 'lastName': vm.lastName, 'email': vm.email});
 			$http.put('/peoples', {'id':id, 'firstName': vm.name, 'lastName': vm.lastName, 'email': vm.email})
 			.then(function (data){
@@ -47,7 +56,13 @@
 				headers: {
 					'Content-type': 'application/json;charset=utf-8'
 				}
-			})
+			}).then(function (data){
+				console.log('OK', data);
+				$scope.peoples = data.data;
+			}, function (err) {
+				console.log(err);
+			});
+			$scope.load($http);
 			
 		}
 
