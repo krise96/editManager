@@ -1,0 +1,47 @@
+<div class="peoples=wrapper">
+
+    <table class="table" >
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+    </tr>
+    <!-- Катюха памагі, тут крч виводиться той список студентів, і менті треба коли я натискаю на кнопку шоб лише 
+    одному вивелось тіпа редагування, а потім ше то якось зберегти 
+    list.peoples прописано в edit List
+    -->
+     <tr ng-repeat="item in list.peoples track by $index" ng-controller="RowController as row">
+        <th>
+            <th>
+                <p ng-show="!row.showEdit">{{item.firstName}}</p>
+                <input type="text" class="form-control" id="usr" ng-show="row.showEdit" value="{{item.firstName}}">
+            </th>
+        </th>
+        <th>
+            <p ng-show="!row.showEdit">{{item.lastName}}</p>
+            <input type="text" class="form-control" id="usr" ng-show="row.showEdit" value="{{item.lastName}}">
+        </th>
+        <th>
+            <p ng-show="!row.showEdit">{{item.email}}</p>
+            <input type="email" class="form-control" id="usr" ng-show="row.showEdit" value="{{item.email}}">
+        </th>
+        <th>
+            <img src='/img/pencil.png'>
+        </th>
+        <th>
+            <img src='/img/garbage.png'>
+        </th>
+    </tr>
+    </table>
+
+    <table  class="table">
+        <tr>
+            <th><input type="text" class="form-control" id="usr" ng-model="firstName" placeholder="Your name"></th>
+            <th><input type="text" class="form-control" id="usr" ng-model="lastName" placeholder="Your last name"></th>
+            <th>
+                <input type="email" class="form-control" name="emailIn" id="usr" ng-model="email" placeholder="Your email">   
+            </th>
+            <th><button type="button" class="btn btn-danger" ng-click="list.addPeople(firstName, lastName, email)">ADD new people</button></th>
+        </tr>
+    </table>
+</div>
